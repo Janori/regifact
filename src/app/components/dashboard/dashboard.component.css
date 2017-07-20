@@ -1,0 +1,166 @@
+/** IMPORT HELPER CSS **/
+/** IMPORT BASE CSS **/
+html, body {
+  height: 100%;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font: 14px/20px "Proxima Nova", "Helvetica Neue", arial, sans-serif;
+  color: #676e74;
+  background: #E9EEF1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #1F2123;
+}
+
+h1, h2 {
+  color: #4f5459;
+  margin: 5px 0 20px 0;
+}
+
+h1 {
+  font-size: 25px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+
+#main {
+  margin-left: 180px;
+}
+#main header {
+  position: fixed;
+  background: #fff;
+  width: 100%;
+  padding: 20px;
+  z-index: +1;
+  border-bottom: 1px solid #d9e2e7;
+}
+#main header .breadcrumb {
+  margin-bottom: 0px;
+  background: transparent;
+}
+#main header h1 {
+  color: #737E89;
+  font-size: 17px;
+  font-weight: 400;
+  margin: 0;
+}
+#main #content {
+  position: relative;
+  top: 5px;
+  padding: 20px;
+}
+#main .property-glance i {
+  margin-right: 5px;
+}
+#main .property-glance .progress {
+  float: right;
+  width: 30%;
+  height: 18px;
+  margin-top: 2px;
+}
+#main .property-glance .progress .progress-bar {
+  font-size: 75%;
+}
+#main .property-glance .widget {
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  background: #fa5a5a;
+  color: #fff;
+  font-size: 200%;
+}
+#main .property-glance .widget:hover {
+  background: #fa4b4b;
+}
+#main .timeline {
+  position: relative;
+  padding-left: 80px;
+}
+#main .timeline:before {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  left: 40px;
+  content: "";
+  background: #cbd4db;
+}
+#main .timeline .item {
+  position: relative;
+}
+#main .timeline .item .circle {
+  position: absolute;
+  top: 20px;
+  left: -42px;
+  background: #acbbc7;
+  border: 1px solid #ccc;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+#main .timeline .item .message {
+  position: relative;
+  z-index: 2;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+#main .timeline .item .message:before {
+  position: absolute;
+  z-index: 0;
+  content: "";
+  top: 25px;
+  left: -6px;
+  box-sizing: border-box;
+  border: 5px solid transparent;
+  border-top-color: #fff;
+  border-bottom-color: transparent;
+  border-left-color: #fff;
+  border-right-color: transparent;
+  filter: drop-shadow(-1px 0 1px rgba(0, 0, 0, 0.08));
+  transform-origin: 0 0;
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 767px) {
+
+  #main {
+    margin-left: 66px;
+  }
+}
+@media (max-width: 320px) {
+
+  #main {
+    padding: 50px 0 0 0;
+    margin: 0;
+  }
+}
+.box {
+  position: relative;
+  background: #fff;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+.box h4 {
+  margin: 0 0 10px 0;
+}
+.box .header {
+  padding: 20px 20px 0;
+}
+.box .body {
+  padding: 20px 20px 8px;
+}
+.box .footer {
+  padding: 10px 20px;
+  border-top: 1px solid #E9EEF1;
+}

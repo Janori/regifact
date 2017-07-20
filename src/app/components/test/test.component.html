@@ -1,0 +1,14 @@
+<pre>
+  {{ data | json }}
+</pre>
+
+<pre>
+  {{ isLogged | json }}
+</pre>
+
+<p *ngIf="data.data != null">
+  {{ data.data.amount | number:'2.0-0'}}
+</p>
+<p *ngIf="data.data != null">
+  {{ data.data.amount }}
+</p>

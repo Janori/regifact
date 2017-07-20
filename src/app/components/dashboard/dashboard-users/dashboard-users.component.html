@@ -1,0 +1,46 @@
+<div class="animated fadeIn">
+  <h1>Usuarios</h1>
+
+  <div id="table" class="table-editable">
+
+  <button [routerLink]="['create']"
+          type="button" class="btn btn-success btn-sm pull-right">
+    <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+    Agregar usuario
+  </button>
+  <br/><br/>
+   <table class="table">
+     <tr>
+       <th>#</th>
+       <th>Nombre</th>
+       <th>Correo</th>
+       <th>Tipo</th>
+       <th>Rol</th>
+       <th>Creado</th>
+       <th data-attr-ignore></th>
+     </tr>
+     <tr *ngFor="let user of users">
+       <td>{{user.id}}</td>
+       <td>{{user.name}}</td>
+       <td>{{user.email}}</td>
+       <td>{{user.kind | enumWs:'users/kinds' | async }}</td>
+       <td>{{user.role_description}}</td>
+       <td>{{ setDate(user.created_at) | date:'dd MMM yyyy, HH:mm'}}</td>
+       <td>
+         <button [routerLink]="[user.id,'edit']"
+                 type="button" class="btn btn-primary btn-sm">
+           <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
+           Editar
+         </button>
+         <button (click)="borrar(user.id)"
+           type="button" class="btn btn-danger btn-sm">
+           <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+           Borrar
+         </button>
+       </td>
+     </tr>
+   </table>
+ </div>
+
+
+</div>
