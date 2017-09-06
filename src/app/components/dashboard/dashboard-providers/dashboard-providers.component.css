@@ -1,0 +1,7 @@
+button{
+  cursor: pointer;
+}
+
+table button{
+  margin-left: 5px;
+}

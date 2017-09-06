@@ -15,11 +15,11 @@ export class TestComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.porderService.getPorder().subscribe(data=>{
+  /*  this.porderService.getPorder().subscribe(data=>{
       this.data = data;
     });
     this.authService.login("luke1@gmail.com", "secrest");
-    this.isLogged = this.authService.isAuthenticated();
+    this.isLogged = this.authService.isAuthenticated();*/
   }
 
 

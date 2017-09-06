@@ -1,0 +1,98 @@
+<div class="animated fadeIn">
+  <h1>{{ isEditing ? 'Editar' : 'Crear'}} proveedor</h1>
+
+  <form [formGroup]="form" class="form form-top">
+
+
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="name"
+             placeholder="*Nombre de empresa">
+       <md-error *ngIf="form.controls['name'].errors?.required">
+        El nombre es requerido.
+       </md-error>
+       <md-error *ngIf="form.controls['name'].errors?.pattern">
+        El nombre contiene caracteres no válidos.
+       </md-error>
+    </md-input-container>
+
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="username"
+             placeholder="*RFC"
+             >
+      <span mdSuffix><i [ngClass]="{'fa fa-circle-o-notch fa-spin': form.controls['username'].status.toLowerCase() == 'pending'}"></i></span>
+      <md-error *ngIf="form.controls['username'].errors?.required">
+        El nombre de usuario es requerido.
+      </md-error>
+      <md-error *ngIf="form.controls['username'].errors?.existe">
+        El nombre de usuario ya existe.
+      </md-error>
+    </md-input-container>
+
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="email"
+             placeholder="Email"
+             >
+      <span mdSuffix><i [ngClass]="{'fa fa-circle-o-notch fa-spin': form.controls['email'].status.toLowerCase() == 'pending'}"></i></span>
+      <md-error *ngIf="form.controls['email'].errors?.pattern">
+        Ingresa un correo válido.
+      </md-error>
+      <md-error *ngIf="form.controls['email'].errors?.existe">
+        El correo ya existe.
+      </md-error>
+    </md-input-container>
+
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="password"
+             type="password"
+             placeholder="*Contraseña">
+
+       <md-hint align="start">Símbolos permitidos: . ? ! $ # @ _ -</md-hint>
+       <md-error *ngIf="form.controls['password'].errors?.required">
+        La contraseña es requerida.
+       </md-error>
+       <md-error *ngIf="form.controls['password'].errors?.pattern">
+        La contraseña contiene caracteres no válidos.
+       </md-error>
+       <md-error *ngIf="form.controls['password'].errors?.minlength">
+        La contraseña debe contener por lo menos 6 caracteres.
+       </md-error>
+    </md-input-container>
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="password_repeat"
+             type="password"
+             placeholder="*Repetir contraseña">
+       <md-error *ngIf="form.controls['password_repeat'].errors?.notEqual
+                       || form.controls['password'].errors?.notEqual">
+        Las contraseñas no son iguales.
+       </md-error>
+    </md-input-container>
+
+  </form>
+
+  <!-- Botones de acción -->
+  <div class="form-submit">
+    <div class="pull-right">
+
+      <button [routerLink]="['/dashboard/providers']"
+              class="btn btn-success"
+              type="button">
+        <i class="fa fa-chevron-left"></i>
+        Volver
+      </button>
+
+      <button (click)="save(form)"
+              [disabled]="!form.valid || saving"
+              class="btn btn-primary"
+              type="button">
+        Guardar
+        <i class="fa" [ngClass]="{'fa-save':!saving, 'fa-refresh fa-spin':saving}"></i>
+      </button>
+
+    </div>
+  </div>
+</div>

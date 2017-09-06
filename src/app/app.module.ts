@@ -2,7 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { ChartsModule } from 'ng2-charts';
 
 import { AppComponent } from './app.component';
 import { TestComponent } from './components/test/test.component';
@@ -14,6 +16,7 @@ import { DashboardUsersComponent } from './components/dashboard/dashboard-users/
 import { DashboardProvidersComponent } from './components/dashboard/dashboard-providers/dashboard-providers.component';
 import { DashboardOcComponent } from './components/dashboard/dashboard-oc/dashboard-oc.component';
 import { DashboardProfileComponent } from './components/dashboard/dashboard-profile/dashboard-profile.component';
+import { DashboardProvidersSetComponent } from './components/dashboard/dashboard-providers/dashboard-providers-set.component';
 
 //Routes
 import { APP_ROUTING } from './app.routes';
@@ -25,8 +28,10 @@ import { SelectOnClickDirective } from './directives/select-on-click.directive';
 import { PorderService } from './services/porder.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
+import { AccessGuardService } from './services/access-guard.service';
 import { ConstService } from './services/const.service';
 import { UsersService } from './services/users.service';
+import { SearchService } from './services/search.service';
 
 //Pipes
 import { EnumWsPipe } from './pipes/enum-ws.pipe';
@@ -34,7 +39,22 @@ import { DashboardUsersEditComponent } from './components/dashboard/dashboard-us
 import { DashboardUsersCreateComponent } from './components/dashboard/dashboard-users/dashboard-users-create.component';
 
 //Material
-import {MdInputModule, MdSelectModule} from '@angular/material';
+import {MdInputModule, MdSelectModule,
+       MdPaginatorModule, MdDialogModule,
+       MdButtonModule, MdCardModule,
+       MdDatepickerModule, MdNativeDateModule,
+       MdCheckboxModule, MdTooltipModule, } from '@angular/material';
+
+import { CdkTableModule } from '@angular/cdk';
+import { DialogResultCreateComponent } from './components/shared/dialog-result-create/dialog-result-create.component';
+import { SearchboxComponent } from './components/shared/searchbox/searchbox.component';
+import { PaginatorComponent } from './components/shared/paginator/paginator.component';
+import { DndDirective } from './directives/dnd.directive';
+import { DashboardUsersOCComponent } from './components/dashboard/dashboard-users/dashboard-users-oc/dashboard-users-oc.component';
+import { DonnutComponent } from './components/shared/donnut/donnut.component';
+import { DialogResultConfirmComponent } from './components/shared/dialog-result-confirm/dialog-result-confirm.component';
+import { DashboardOcProvidersComponent } from './components/dashboard/dashboard-oc-providers/dashboard-oc-providers.component';
+
 
 @NgModule({
   declarations: [
@@ -51,22 +71,43 @@ import {MdInputModule, MdSelectModule} from '@angular/material';
     DashboardProfileComponent,
     EnumWsPipe,
     DashboardUsersEditComponent,
-    DashboardUsersCreateComponent
+    DashboardUsersCreateComponent,
+    DashboardProvidersSetComponent,
+    DialogResultCreateComponent,
+    SearchboxComponent,
+    PaginatorComponent,
+    DndDirective,
+    DashboardUsersOCComponent,
+    DonnutComponent,
+    DialogResultConfirmComponent,
+    DashboardOcProvidersComponent,
+  ],
+  entryComponents: [
+    DialogResultCreateComponent,
+    DialogResultConfirmComponent
   ],
   imports: [
     APP_ROUTING,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
-    MdInputModule, MdSelectModule
+    MdInputModule, MdSelectModule, MdDialogModule, MdPaginatorModule,
+    MdButtonModule, MdCardModule, MdDatepickerModule, MdNativeDateModule,
+    MdCheckboxModule,
+    CdkTableModule,
+    ChartsModule,
+    MdTooltipModule,
   ],
   providers: [
     PorderService,
     AuthService,
+    AccessGuardService,
     AuthGuardService,
     ConstService,
-    UsersService
+    UsersService,
+    SearchService
   ],
   bootstrap: [AppComponent]
 })

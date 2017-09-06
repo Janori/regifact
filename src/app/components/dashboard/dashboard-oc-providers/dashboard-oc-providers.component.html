@@ -1,0 +1,123 @@
+<div class="row">
+  <div class="col-md-4 col-xs-12 text-center">
+      <h2>Órdenes de compra</h2>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-12">
+        <app-searchbox hoverText="Buscar #OC, #Factura, agente..."
+                      [value]="params.query"
+                       (performSearch)="buscar($event)"></app-searchbox>
+      </div>
+      <!--<div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6">
+            De:
+            <md-input-container>
+              <input mdInput [mdDatepicker]="dFrom">
+              <button mdSuffix [mdDatepickerToggle]="dFrom"></button>
+            </md-input-container>
+            <md-datepicker #dFrom></md-datepicker>
+          </div>
+          <div class="col-md-6">
+            Hasta:
+            <md-input-container>
+              <input mdInput [mdDatepicker]="dTo" >
+              <button mdSuffix [mdDatepickerToggle]="dTo"></button>
+            </md-input-container>
+            <md-datepicker #dTo [(ngModel)]="dateTo"></md-datepicker>
+          </div>
+        </div>
+      </div>-->
+    </div>
+  </div>
+  <!--<div class="col-md-4">
+    <h4>Incluir en búsqueda:</h4>
+    <md-checkbox [(ngModel)]="checkFecha">Rango de fechas</md-checkbox>
+  </div>-->
+</div>
+
+
+<table *ngIf="ocs" class="table table-responsive">
+ <tr>
+   <th>#OC</th>
+   <th>#Factura</th>
+   <th>PDF
+     <i class="fa" [ngClass]="{'fa-refresh fa-spin':pdfLoading>0}"></i>
+   </th>
+   <th>XML
+     <i class="fa" [ngClass]="{'fa-refresh fa-spin':xmlLoading>0}"></i>
+   </th>
+   <th>Monto</th>
+   <th>Estado</th>
+   <th>Agente</th>
+   <th>Fecha</th>
+   <th></th>
+ </tr>
+ <tr *ngFor="let oc of ocs">
+   <td>
+     <a mdTooltip="Abrir PDF de la Orden de Compra" (click)="showFile(oc.oc_path, true)" [routerLink]="['./']">
+       {{oc.porder_number}}
+     </a>
+   </td>
+   <td>{{oc.invoice_number}}</td>
+   <td>
+     <div *ngIf="oc.files?.pdf_path" class="col-md-2 center-block">
+       <div class="badges">
+         <img (click)="showFile(oc.files.pdf_path, true)"
+              style="cursor:pointer"
+              class="img-rounded" src="./assets/img/pdf_2.svg" alt="archivo pdf">
+          <button (click)="deletePDF(oc.files.id, oc.files.pdf_path);oc.files.pdf_path = null;"
+                  style="cursor:pointer"
+                  type="button" class="btn btn-sm btn-danger">
+           <span>
+             <i class="fa fa-times fa-lg" aria-hidden="true"></i>
+           </span>
+          </button>
+       </div>
+     </div>
+     <button *ngIf="!oc.files?.pdf_path" class="btn btn-primary btn-sm" (click)="openPDF()">
+       <input hidden #pdfInput (change)="savePDF($event, oc)"
+              id="fileInput" type="file"/>
+         PDF
+        <i class="fa fa-upload fa-lg" aria-hidden="true"></i>
+     </button>
+   </td>
+   <td>
+     <div *ngIf="oc.files?.xml_path" class="col-md-2 center-block">
+       <div class="badges">
+         <img (click)="showFile(oc.files.xml_path, false, oc.id)"
+              style="cursor:pointer"
+              class="img-rounded" src="./assets/img/xml.svg" alt="archivo xml">
+          <button (click)="deleteXML(oc.files.id, oc.files.xml_path);oc.files.xml_path = null;"
+                  style="cursor:pointer"
+                  type="button" class="btn btn-sm btn-danger">
+           <span>
+             <i class="fa fa-times fa-lg" aria-hidden="true"></i>
+           </span>
+          </button>
+
+       </div>
+     </div>
+     <button *ngIf="!oc.files?.xml_path" class="btn btn-success btn-sm" (click)="openXML()">
+       <input hidden #xmlInput (change)="saveXML($event, oc)"
+              id="fileInput" type="file"/>
+         XML
+        <i class="fa fa-upload fa-lg" aria-hidden="true"></i>
+     </button>
+   </td>
+   <td>{{oc.amount | currency:'USD':true:'1.2-2'}}</td>
+   <td>
+     <div *ngIf="oc.files?.xml_path && oc.files?.pdf_path">Válido</div>
+     <div *ngIf="!(oc.files?.xml_path && oc.files?.pdf_path)" >{{oc.status}}</div>
+   </td>
+   <td>{{oc.users.name}}</td>
+   <td>{{ setDate(oc.created_at) | date:'dd MMM yyyy, HH:mm'}}</td>
+ </tr>
+</table>
+
+<app-paginator [count]="resultCount" [resultsPerPage]="params.to"></app-paginator>

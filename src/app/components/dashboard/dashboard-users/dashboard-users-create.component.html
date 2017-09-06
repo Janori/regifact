@@ -1,51 +1,104 @@
 <div class="animated fadeIn">
   <h1>Crear usuario</h1>
 
-  <div class="form-top">
+  <form [formGroup]="forma" class="form form-top">
 
-    <md-input-container>
-      <input mdInput name="name"
-            placeholder="Nombre" value="">
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="username"
+             placeholder="*Nombre de usuario">
+      <span mdSuffix><i [ngClass]="{'fa fa-circle-o-notch fa-spin': forma.controls['username'].status.toLowerCase() == 'pending'}"></i></span>
+      <md-error *ngIf="forma.controls['username'].errors?.required">
+        El nombre de usuario es requerido.
+      </md-error>
+      <md-error *ngIf="forma.controls['username'].errors?.existe">
+        El nombre de usuario ya existe.
+      </md-error>
     </md-input-container>
-    <br>
-    <md-input-container>
-      <input mdInput name="password"
-            placeholder="Contraseña" value="">
-    </md-input-container>
-    <br><br>
 
-    <md-select *ngIf="roles" [(ngModel)]="rolSelected"
-               name="rol" placeholder="Rol">
-      <md-option *ngFor="let rol of roles" [value]="rol?.id">
-        {{ rol?.description }}
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="email"
+             placeholder="*Email"
+             >
+      <span mdSuffix><i [ngClass]="{'fa fa-circle-o-notch fa-spin': forma.controls['email'].status.toLowerCase() == 'pending'}"></i></span>
+      <md-error *ngIf="forma.controls['email'].errors?.pattern">
+        Ingresa un correo válido.
+      </md-error>
+      <md-error *ngIf="forma.controls['email'].errors?.existe">
+        El correo ya existe.
+      </md-error>
+    </md-input-container>
+
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="password"
+             type="password"
+             placeholder="*Contraseña">
+
+       <md-hint align="start">Símbolos permitidos: . ? ! $ # @ _ -</md-hint>
+       <md-error *ngIf="forma.controls['password'].errors?.required">
+        La contraseña es requerida.
+       </md-error>
+       <md-error *ngIf="forma.controls['password'].errors?.pattern">
+        La contraseña contiene caracteres no válidos.
+       </md-error>
+       <md-error *ngIf="forma.controls['password'].errors?.minlength">
+        La contraseña debe contener por lo menos 6 caracteres.
+       </md-error>
+    </md-input-container>
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="password_repeat"
+             type="password"
+             placeholder="*Repetir contraseña">
+       <md-error *ngIf="forma.controls['password_repeat'].errors?.notEqual ||
+                        forma.controls['password'].errors?.notEqual">
+        Las contraseñas no son iguales.
+       </md-error>
+    </md-input-container>
+
+    <md-input-container class="input-style">
+      <input mdInput
+             formControlName="name"
+             placeholder="*Nombre completo">
+       <md-error *ngIf="forma.controls['name'].errors?.required">
+        El nombre es requerido.
+       </md-error>
+       <md-error *ngIf="forma.controls['name'].errors?.pattern">
+        Se necesitan entre 2 y 4 palabras.
+       </md-error>
+    </md-input-container>
+
+    <md-select class="input-style selector-style"
+               formControlName="rol"
+               placeholder="*Rol">
+      <md-option *ngFor="let rol of roles" [value]="rol.id">
+        {{ rol.description }}
       </md-option>
     </md-select>
-    <br><br><br>
-    <md-select *ngIf="kinds" [(ngModel)]="kindSelected"
-               name="kind" placeholder="Tipo de usuario">
-      <md-option *ngFor="let kind of kinds" [value]="kind?.key">
-        {{ kind?.value }}
-      </md-option>
-    </md-select>
 
-    <br><br><br>
-
-  </div>
+  </form>
 
   <!-- Botones de acción -->
   <div class="form-submit">
     <div class="pull-right">
+
       <button [routerLink]="['/dashboard/users']"
-        class="btn btn-success"
-        type="button">
+              class="btn btn-success"
+              type="button">
         <i class="fa fa-chevron-left"></i>
         Volver
       </button>
-      <button class="btn btn-primary"
-        type="button">
+
+      <button (click)="save(forma)"
+              class="btn btn-primary"
+              type="button"
+              [disabled]="!forma.valid">
         Guardar
-        <i class="fa fa-save"></i>
+        <i class="fa" [ngClass]="{'fa-save':!saving, 'fa-refresh fa-spin':saving}"></i>
       </button>
+
     </div>
   </div>
 </div>

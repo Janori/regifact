@@ -4,7 +4,7 @@
 
     <button *ngIf="error" (click)="error=false"
             type="button" class="btn btn-danger btn-sm">
-        Usuario o contraseña incorrecta
+        {{ errorMsg }}
         <i class="fa fa-times"></i>
     </button>
 

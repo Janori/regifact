@@ -1,3 +1,62 @@
-<p>
-  dashboard-providers works!
-</p>
+<div class="animated fadeIn">
+
+
+    <div class="row">
+      <div class="col-md-2 col-xs-12 text-center">
+          <h1>Proveedores</h1>
+      </div>
+    </div>
+
+    <app-searchbox hoverText="Buscar proveedor..."
+                  [value]="params.query"
+                   (performSearch)="buscar($event)"></app-searchbox>
+
+    <table *ngIf="users" class="table table-responsive">
+     <tr>
+       <th>#</th>
+       <th>RFC</th>
+       <th>Nombre</th>
+       <th>Correo</th>
+       <th>Creado</th>
+       <th>
+         <button *ngIf="canUse('a_prov_add')" [routerLink]="['create']"
+                 type="button" class="btn btn-success btn-sm btn-block">
+           <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+           Agregar proveedor
+         </button>
+       </th>
+     </tr>
+     <tr *ngFor="let user of users">
+       <td>{{user.id}}</td>
+       <td>{{user.username}}</td>
+       <td>{{user.name}}</td>
+       <td>{{user.email}}</td>
+       <td>{{ setDate(user.created_at) | date:'dd MMM yyyy, HH:mm'}}</td>
+       <td>
+         <div class="row">
+           <div class="col-md-12">
+             <button [routerLink]="[user.id, 'add-oc']"
+               type="button" class="btn btn-warning btn-sm">
+               <i class="fa fa-folder fa-lg" aria-hidden="true"></i>
+               Nueva OC
+             </button>
+             <button *ngIf="canUse('a_prov_edit')" [routerLink]="[user.id,'edit']"
+                     type="button" class="btn btn-primary btn-sm">
+               <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
+               Editar
+             </button>
+             <button *ngIf="canUse('a_prov_del')" (click)="borrar(user.id)"
+               type="button" class="btn btn-danger btn-sm">
+               <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+               Borrar
+             </button>
+           </div>
+         </div>
+       </td>
+     </tr>
+    </table>
+
+    <app-paginator [count]="resultCount" [resultsPerPage]="params.to"></app-paginator>
+
+
+</div>

@@ -12,9 +12,10 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   isLogging = false;
   error = false;
+  errorMsg = "";
   displayForm:string = "display";
 
-  usuario:Object = {
+  usuario:any = {
     user: '',
     pass: ''
   }
@@ -30,8 +31,6 @@ export class LoginComponent implements OnInit {
   }
 
   login(forma:NgForm){
-    console.log('NgForm', forma);
-    console.log('Value', forma.value);
     this.error = false;
 
     if(!this.isLogging){
@@ -41,17 +40,24 @@ export class LoginComponent implements OnInit {
         this.authService.login(forma.value.user, forma.value.secret)
         .subscribe(res=>{
           if(!res){
-            this.error = true;
-            this.isLogging = false;
-            this.displayForm = "block";
+            this.errorMsg = "Usuario o contraseña incorrecta."
+            this.loginError();
           }else{
             this.router.navigate(['/home']);
           }
+        }, error =>{
+          this.errorMsg = error;
+          this.loginError();
         });
 
-      }, 1000)
+      }, 700)
     }
   }
 
+  loginError(){
+    this.error = true;
+    this.isLogging = false;
+    this.displayForm = "block";
+  }
 
 }

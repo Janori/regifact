@@ -20,7 +20,6 @@ export class EnumWsPipe implements PipeTransform {
       if(res.json().status){
         let dic:IKeyValue[] = res.json().data;
         for(let row of dic){
-          console.log("Key:" + row.key + " PK:" + value);
           if(row.key == value){
             return row.value;
           }

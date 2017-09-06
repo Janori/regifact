@@ -1,0 +1,50 @@
+.left10{
+  margin-left: 10px;
+}
+
+.input-style{
+  width: 300px;
+  max-width: auto;
+  margin-top: 20px;
+}
+
+.input-header-style{
+  width: 500px;
+  max-width: auto;
+  margin-top: 20px;
+}
+input:-moz-read-only { /* For Firefox */
+  cursor:not-allowed;
+}
+input:read-only {
+  cursor:not-allowed;
+}
+
+button input{
+  border-width: 0px;
+  display:none;
+  style: none;
+  background: transparent;
+}
+
+.dropzone {
+  min-height: 100px;
+  min-width: 250px;
+  max-width: 500px;
+  display: table;
+  width: 60%;
+  background-color: #eee;
+  border: dotted 5px #aaa;
+}
+
+.text-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.centered {
+  font-family: sans-serif;
+  font-size: 1.3em;
+  font-weight: bold;
+  text-align:center;
+}

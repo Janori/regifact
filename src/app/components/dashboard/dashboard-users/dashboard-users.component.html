@@ -1,45 +1,58 @@
 <div class="animated fadeIn">
-  <h1>Usuarios</h1>
 
-  <div id="table" class="table-editable">
+  <div class="main-container">
+  <div class="row">
+    <div class="col-md-2 col-xs-12 text-center">
+        <h1>Usuarios</h1>
+    </div>
+  </div>
 
-  <button [routerLink]="['create']"
-          type="button" class="btn btn-success btn-sm pull-right">
-    <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
-    Agregar usuario
-  </button>
-  <br/><br/>
-   <table class="table">
+  <app-searchbox hoverText="Buscar usuario..."
+                [value]="params.query"
+                 (performSearch)="buscar($event)"></app-searchbox>
+
+   <table *ngIf="users" class="table table-responsive">
      <tr>
        <th>#</th>
        <th>Nombre</th>
        <th>Correo</th>
-       <th>Tipo</th>
        <th>Rol</th>
        <th>Creado</th>
-       <th data-attr-ignore></th>
+       <th>
+         <button *ngIf="canUse('a_usr_add')" [routerLink]="['create']"
+                 type="button" class="btn btn-success btn-sm btn-block">
+           <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+           Agregar usuario
+         </button>
+       </th>
      </tr>
      <tr *ngFor="let user of users">
        <td>{{user.id}}</td>
        <td>{{user.name}}</td>
        <td>{{user.email}}</td>
-       <td>{{user.kind | enumWs:'users/kinds' | async }}</td>
        <td>{{user.role_description}}</td>
        <td>{{ setDate(user.created_at) | date:'dd MMM yyyy, HH:mm'}}</td>
        <td>
-         <button [routerLink]="[user.id,'edit']"
-                 type="button" class="btn btn-primary btn-sm">
-           <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
-           Editar
-         </button>
-         <button (click)="borrar(user.id)"
-           type="button" class="btn btn-danger btn-sm">
-           <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
-           Borrar
-         </button>
+         <div class="row">
+           <div class="col-md-12">
+             <button *ngIf="canUse('a_usr_edit')" [routerLink]="[user.id,'edit']"
+                     type="button" class="btn btn-primary btn-sm pull-right">
+               <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
+               Editar
+             </button>
+             <button *ngIf="canUse('a_usr_del')" (click)="borrar(user.id)"
+               type="button" class="btn btn-danger btn-sm pull-right">
+               <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+               Borrar
+             </button>
+           </div>
+         </div>
        </td>
      </tr>
    </table>
+
+  <app-paginator [count]="resultCount" [resultsPerPage]="params.to"></app-paginator>
+
  </div>
 
 

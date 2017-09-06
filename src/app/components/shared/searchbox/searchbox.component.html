@@ -1,0 +1,6 @@
+<form class="search_bar large">
+  <input autocomplete="off" name="search" [(ngModel)]="value" type="search" [placeholder]="hoverText"/>
+
+  <button (click)="search()"
+     type="submit" value="Search">{{ submitValue }}</button>
+</form>

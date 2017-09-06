@@ -68,6 +68,9 @@
     padding: 3px 5px;
   }
   #nav li {
+    -webkit-transform: translateX(50%);
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
     display: inline-block;
   }
   #nav li a {

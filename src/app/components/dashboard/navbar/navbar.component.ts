@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Data, canUse } from '../../../shared.data';
 
 @Component({
   selector: 'app-navbar',
@@ -8,6 +9,10 @@ import { Component, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
 
   constructor() { }
+
+  canUse(value:string){
+    return Data.canUse(value);
+  }
 
   ngOnInit() {
   }

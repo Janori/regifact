@@ -1,0 +1,9 @@
+<h2 md-dialog-title>Datos guardados correctamente</h2>
+<md-dialog-actions>
+    <button md-button md-dialog-close
+      class="btn btn-outline-secondary black">Volver</button>
+    <button md-button [md-dialog-close]="'new'"
+        class="btn btn-outline-success" >Crear nuevo</button>
+    <button  md-button [md-dialog-close]="'edit'"
+        class="btn btn-outline-primary">Editar</button>
+</md-dialog-actions>

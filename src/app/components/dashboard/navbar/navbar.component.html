@@ -1,22 +1,22 @@
 <div id="nav">
   <ul>
-    <li class="head">Regifact</li>
+    <li class="head">Bymssa</li>
     <li routerLinkActive="active">
       <a [routerLink]="['home']">
         <i class="fa fa-fw fa-dashboard"></i><span>Dashboard</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li *ngIf="canUse('v_cat_usr')" routerLinkActive="active">
       <a [routerLink]="['users']">
         <i class="fa fa-fw fa-users"></i><span>Usuarios</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li *ngIf="canUse('v_cat_prov')" routerLinkActive="active">
       <a [routerLink]="['providers']">
         <i class="fa fa-fw fa-truck"></i><span>Proveedores</span>
       </a>
     </li>
-    <li routerLinkActive="active">
+    <li *ngIf="canUse('v_cat_oc')" routerLinkActive="active">
       <a [routerLink]="['oc']">
         <i class="fa fa-fw fa-inbox"></i><span class="swatch light-grey">OC</span>
       </a>

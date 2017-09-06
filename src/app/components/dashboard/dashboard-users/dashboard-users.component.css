@@ -1,0 +1,12 @@
+.main-container{
+  width: 100%;
+
+}
+
+button{
+  cursor: pointer;
+}
+
+table button{
+  margin-left: 5px;
+}
