@@ -35,6 +35,8 @@ import { SearchService } from './services/search.service';
 
 //Pipes
 import { EnumWsPipe } from './pipes/enum-ws.pipe';
+import { DomsafePipe } from './pipes/domsafe.pipe';
+
 import { DashboardUsersEditComponent } from './components/dashboard/dashboard-users/dashboard-users-edit.component';
 import { DashboardUsersCreateComponent } from './components/dashboard/dashboard-users/dashboard-users-create.component';
 
@@ -54,6 +56,7 @@ import { DashboardUsersOCComponent } from './components/dashboard/dashboard-user
 import { DonnutComponent } from './components/shared/donnut/donnut.component';
 import { DialogResultConfirmComponent } from './components/shared/dialog-result-confirm/dialog-result-confirm.component';
 import { DashboardOcProvidersComponent } from './components/dashboard/dashboard-oc-providers/dashboard-oc-providers.component';
+import { DialogResultOpenOrDownloadComponent } from './components/shared/dialog-result-open-or-download/dialog-result-open-or-download.component';
 
 
 @NgModule({
@@ -69,7 +72,7 @@ import { DashboardOcProvidersComponent } from './components/dashboard/dashboard-
     DashboardProvidersComponent,
     DashboardOcComponent,
     DashboardProfileComponent,
-    EnumWsPipe,
+    EnumWsPipe, DomsafePipe,
     DashboardUsersEditComponent,
     DashboardUsersCreateComponent,
     DashboardProvidersSetComponent,
@@ -81,10 +84,12 @@ import { DashboardOcProvidersComponent } from './components/dashboard/dashboard-
     DonnutComponent,
     DialogResultConfirmComponent,
     DashboardOcProvidersComponent,
+    DialogResultOpenOrDownloadComponent,
   ],
   entryComponents: [
     DialogResultCreateComponent,
-    DialogResultConfirmComponent
+    DialogResultConfirmComponent,
+    DialogResultOpenOrDownloadComponent
   ],
   imports: [
     APP_ROUTING,

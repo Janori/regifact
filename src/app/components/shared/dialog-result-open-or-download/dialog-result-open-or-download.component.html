@@ -1,0 +1,6 @@
+<h2 md-dialog-title>¿Qué deseas hacer?</h2>
+<md-dialog-actions>
+    <button md-button (click)="download()" [md-dialog-close]="'download'"
+        class="btn btn-outline-success" >Descargar</button>
+    <a role="button" class="btn btn-outline-primary" [attr.href]="(isPDF ? oc.download_pdf_path : oc.download_xml_path) | domsafe:''">Abrir</a>
+</md-dialog-actions>

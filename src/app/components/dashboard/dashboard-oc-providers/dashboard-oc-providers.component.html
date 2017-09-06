@@ -60,7 +60,7 @@
  </tr>
  <tr *ngFor="let oc of ocs">
    <td>
-     <a mdTooltip="Abrir PDF de la Orden de Compra" (click)="showFile(oc.oc_path, true)" [routerLink]="['./']">
+     <a mdTooltip="Abrir PDF de la Orden de Compra" (click)="showFile(oc, true, true)" [routerLink]="['./']">
        {{oc.porder_number}}
      </a>
    </td>
@@ -68,7 +68,7 @@
    <td>
      <div *ngIf="oc.files?.pdf_path" class="col-md-2 center-block">
        <div class="badges">
-         <img (click)="showFile(oc.files.pdf_path, true)"
+         <img (click)="showFile(oc, true)"
               style="cursor:pointer"
               class="img-rounded" src="./assets/img/pdf_2.svg" alt="archivo pdf">
           <button (click)="deletePDF(oc.files.id, oc.files.pdf_path);oc.files.pdf_path = null;"
@@ -90,7 +90,7 @@
    <td>
      <div *ngIf="oc.files?.xml_path" class="col-md-2 center-block">
        <div class="badges">
-         <img (click)="showFile(oc.files.xml_path, false, oc.id)"
+         <img (click)="showFile(oc, false)"
               style="cursor:pointer"
               class="img-rounded" src="./assets/img/xml.svg" alt="archivo xml">
           <button (click)="deleteXML(oc.files.id, oc.files.xml_path);oc.files.xml_path = null;"

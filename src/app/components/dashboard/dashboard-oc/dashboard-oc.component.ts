@@ -2,9 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchService } from '../../../services/search.service';
 import { PorderService } from '../../../services/porder.service';
-import {MdDialog, MdDialogRef, MdDatepicker } from '@angular/material';
+import {MdDialog, MdDialogRef, MdDatepicker, MdDialogConfig } from '@angular/material';
 import { DialogResultConfirmComponent } from '../../shared/dialog-result-confirm/dialog-result-confirm.component';
+import { DialogResultOpenOrDownloadComponent } from '../../shared/dialog-result-open-or-download/dialog-result-open-or-download.component';
+
 import { Data } from '../../../shared.data';
+
+import * as FileSaver from 'file-saver';
+
 
 @Component({
   selector: 'app-dashboard-oc',
@@ -112,10 +117,44 @@ export class DashboardOcComponent implements OnInit {
     //var newTab = window.open('', '_blank');
     this.porderService.getPOCFile(path, isPDF).subscribe(file=>{
       let url = window.URL.createObjectURL(new Blob([file], {type: isPDF ? 'application/pdf' : 'application/xml'}));
-      console.log(url);
-      oc.download_path = url;
+
+      if(isPDF) oc.download_pdf_path = url;
+      else oc.download_xml_path = url;
+      this.openDialogDownloadOrOpen(oc, file, isPDF);
       //newTab.location.href = url;
       //window.open(url);
     })
+  }
+
+  openDialogDownloadOrOpen(oc:any, file:Blob, isPDF:boolean) {
+    let config: MdDialogConfig = {
+      disableClose: false,
+      width: '',
+      height: '',
+      position: {
+        top: '',
+        bottom: '',
+        left: '',
+        right: ''
+      },
+      data: {
+        oc: oc,
+        file: file,
+        isPDF: isPDF
+      }
+    };
+    let dialogRef = this.dialog.open(DialogResultOpenOrDownloadComponent, config);
+    /*dialogRef.afterClosed().subscribe(result => {
+      switch(result){
+        case 'download':
+          FileSaver.saveAs(file, `file.${isPDF ? "pdf" : "xml"}`);
+        break;
+        case 'open':
+          window.open(isPDF ? oc.download_pdf_path : oc.download_xml_path, '_blank');
+        break;
+        default:
+        break;
+      }
+    });*/
   }
 }
