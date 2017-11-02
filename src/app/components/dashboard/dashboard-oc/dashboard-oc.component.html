@@ -95,7 +95,7 @@
                Lista para finalizar
              </div>
            </div>
-           <div *ngSwitchDefault>{{ oc.active ? oc.status : 'Cancelado' }}</div>
+           <div *ngSwitchDefault>{{ oc.active == 1 ? oc.status : 'Cancelado' }}</div>
          </div>
        </td>
        <td>
@@ -107,12 +107,12 @@
        <td>
          <div class="row">
            <div class="col-md-12">
-             <button *ngIf="canUse('a_edit_oc') && oc.active" [routerLink]="['../../dashboard/providers',oc.user_id,'edit-oc',oc.id]"
+             <button *ngIf="canUse('a_edit_oc') && oc.active == 1" [routerLink]="['../../dashboard/providers',oc.user_id,'edit-oc',oc.id]"
                      type="button" class="btn btn-primary btn-sm">
                <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
                Editar
              </button>
-             <button *ngIf="canUse('a_del_oc') && oc.active" (click)="borrar(oc)"
+             <button *ngIf="canUse('a_del_oc') && oc.active == 1" (click)="borrar(oc)"
                type="button" class="btn btn-danger btn-sm">
                <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
                Cancelar

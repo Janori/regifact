@@ -48,6 +48,7 @@ export class DashboardUsersOCComponent implements OnInit {
         this.getOCData();
       }
     },error=>{
+      console.log("si");
       this.router.navigate(['./dashboard/providers']);
     });
     this.form = new FormGroup({
@@ -70,12 +71,14 @@ export class DashboardUsersOCComponent implements OnInit {
   getUserData(){
     this.userService.getUser(this.userId).subscribe(data =>{
       if(data.data == null || !data.status){
+        console.log("Error al obtener data" + data.msg);
         this.router.navigate(['./dashboard/providers']);
       }else{
         this.user = data.data;
         this.form.controls['username'].setValue(this.user.name);
       }
     }, error => {
+      console.log("Error en userService" + error);
       this.router.navigate(['./dashboard/providers']);
     });
 
@@ -83,9 +86,10 @@ export class DashboardUsersOCComponent implements OnInit {
 
   getOCData(){
     this.porderService.getPorder(this.ocId).subscribe(data=>{
-      if(data.data == null || !data.status)
-        this.router.navigate(['./dashboard/providers'])
-      else{
+      if(data.data == null || !data.status){
+        console.log("Error en status OCData " + data.msg);
+        this.router.navigate(['./dashboard/providers']);
+      }else{
         this.oc = data.data;
         this.form.controls['monto'].setValue(this.oc.amount);
         this.form.controls['folio'].setValue(this.oc.porder_number);
@@ -99,6 +103,7 @@ export class DashboardUsersOCComponent implements OnInit {
         }
       }
     }, error=>{
+      console.log("Error en ocData " + error);
       this.router.navigate(['./dashboard/providers'])
     });
 
