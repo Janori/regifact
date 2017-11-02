@@ -58,17 +58,22 @@
    <th>Fecha</th>
    <th></th>
  </tr>
- <tr *ngFor="let oc of ocs">
+ <tr *ngFor="let oc of ocs; let i=index;">
    <td>
-     <a mdTooltip="Abrir PDF de la Orden de Compra" (click)="showFile(oc, true, true)" [routerLink]="['./']">
+     <button mdTooltip="Abrir PDF de la Orden de Compra"
+             (click)="showFile(oc, true, true)"
+             type="button" class="btn btn-outline-success btn-sm">
+             {{ oc.porder_number }}
+     </button>
+     <!--<a mdTooltip="Abrir PDF de la Orden de Compra" (click)="showFile(oc, true, true)" [routerLink]="['.']">
        {{oc.porder_number}}
-     </a>
+     </a>-->
    </td>
    <td>{{oc.invoice_number}}</td>
    <td>
      <div *ngIf="oc.files?.pdf_path" class="col-md-2 center-block">
-       <div class="badges">
-         <img (click)="showFile(oc, true)"
+       <div class="badges pdfInput">
+         <img (click)="showFile(oc, true, false)"
               style="cursor:pointer"
               class="img-rounded" src="./assets/img/pdf_2.svg" alt="archivo pdf">
           <button (click)="deletePDF(oc.files.id, oc.files.pdf_path);oc.files.pdf_path = null;"
@@ -80,16 +85,15 @@
           </button>
        </div>
      </div>
-     <button *ngIf="!oc.files?.pdf_path" class="btn btn-primary btn-sm" (click)="openPDF()">
-       <input hidden #pdfInput (change)="savePDF($event, oc)"
-              id="fileInput" type="file"/>
+     <button *ngIf="!oc.files?.pdf_path" class="btn btn-primary btn-sm" (click)="openPDF(oc, i)">
+       <input hidden class="pdfInput" (change)="savePDF($event)" type="file"/>
          PDF
         <i class="fa fa-upload fa-lg" aria-hidden="true"></i>
      </button>
    </td>
    <td>
      <div *ngIf="oc.files?.xml_path" class="col-md-2 center-block">
-       <div class="badges">
+       <div class="badges xmlInput">
          <img (click)="showFile(oc, false)"
               style="cursor:pointer"
               class="img-rounded" src="./assets/img/xml.svg" alt="archivo xml">
@@ -103,9 +107,8 @@
 
        </div>
      </div>
-     <button *ngIf="!oc.files?.xml_path" class="btn btn-success btn-sm" (click)="openXML()">
-       <input hidden #xmlInput (change)="saveXML($event, oc)"
-              id="fileInput" type="file"/>
+     <button *ngIf="!oc.files?.xml_path" class="btn btn-success btn-sm" (click)="openXML(oc, i)">
+       <input hidden class="xmlInput" (change)="saveXML($event)" type="file"/>
          XML
         <i class="fa fa-upload fa-lg" aria-hidden="true"></i>
      </button>

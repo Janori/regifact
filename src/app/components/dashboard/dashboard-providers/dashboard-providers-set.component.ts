@@ -109,14 +109,16 @@ export class DashboardProvidersSetComponent implements OnInit {
       var obj:any = {}
       if(form.controls['password'].value != this.defaultPassword){
         obj = {
+          "username":form.controls['username'].value,
           "password":form.controls['password'].value,
           "email":form.controls['email'].value,
           "name": form.controls['name'].value
         }
       }else{
         obj = {
+          "username":form.controls['username'].value,
           "email":form.controls['email'].value,
-          "name": form.controls['name'].value
+          "name": form.controls['name'].value,
         }
       }
       this.saving = true;
@@ -157,7 +159,7 @@ export class DashboardProvidersSetComponent implements OnInit {
 
   editForm(){
     this.form = new FormGroup({
-      'username': new FormControl({value:'', disabled:true}),
+      'username': new FormControl({value:''/*, disabled:true*/}),
       'email': new FormControl('',
         Validators.pattern(EMAIL_REGEX),
         this.checkEmail.bind(this)

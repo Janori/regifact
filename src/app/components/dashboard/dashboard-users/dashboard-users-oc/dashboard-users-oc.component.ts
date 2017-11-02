@@ -59,6 +59,10 @@ export class DashboardUsersOCComponent implements OnInit {
       'monto': new FormControl(this.oc.amount, [
         Validators.required,
         Validators.pattern('^([0-9]+)(\.[0-9]{1,4})?$')
+      ]),
+      'programmed_pay_date': new FormControl(this.oc.programmed_pay_date, [
+        Validators.required,
+        //Validators.pattern('^[]$')
       ])
     });
   }
@@ -85,9 +89,12 @@ export class DashboardUsersOCComponent implements OnInit {
         this.oc = data.data;
         this.form.controls['monto'].setValue(this.oc.amount);
         this.form.controls['folio'].setValue(this.oc.porder_number);
+        try{
+          this.form.controls['programmed_pay_date'].setValue(this.oc.programmed_pay_date);
+        }catch(e){}
         if(this.oc.oc_path){
           this.porderService.getFileUrl(this.ocId).subscribe(res=>{
-            this.fileUrl = res;
+            this.fileUrl = new Blob([res.blob()], { type:res.headers.get('content-type')});
           });
         }
       }
@@ -102,12 +109,14 @@ export class DashboardUsersOCComponent implements OnInit {
   }
   showFile(){
     if(this.files.length > 0){
-      console.log(this.files[0]);
+      //console.log(this.files[0]);
       let url = window.URL.createObjectURL(new Blob([this.files[0]], {type: this.files[0].type}));
       window.open(url);
     }else if(this.fileUrl){
       let url = window.URL.createObjectURL(this.fileUrl);
       window.open(url);
+    }else if(!this.fileUrl){
+      alert('El archivo ya no existe.');
     }
   }
 
@@ -131,17 +140,32 @@ export class DashboardUsersOCComponent implements OnInit {
     }
   }
 
+  pad(num:number, size:number): string {
+      let s = num+"";
+      while (s.length < size) s = "0" + s;
+      return s;
+  }
+
   save(form:FormGroup){
     if(!form.valid){
       alert("Ocurrió un error al guardar los datos.");
       return;
     }
     let file = this.files.length > 0 ? this.files[0] : null;
+
+    let d = <Date>form.controls['programmed_pay_date'].value;
+    let ppd = d.getFullYear().toString() + '-' +
+              this.pad(d.getMonth() + 1, 2).toString() + '-' +
+              this.pad(d.getDay() + 1, 2).toString() + 'T12:00:00';
+
+
     var data = {
       'provider_id': this.userId,
       'porder_number': form.controls['folio'].value,
-      'amount': form.controls['monto'].value
+      'amount': form.controls['monto'].value,
+      'programmed_pay_date': ppd
     }
+
     this.saving = true;
     if(this.isEditing){
       data['id'] = this.ocId;

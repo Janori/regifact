@@ -13,6 +13,7 @@ export class DialogResultOpenOrDownloadComponent implements OnInit {
   oc:any;
   file:Blob;
   isPDF:boolean;
+  oc_path:boolean;
 
 
   download(){
@@ -26,6 +27,7 @@ export class DialogResultOpenOrDownloadComponent implements OnInit {
     this.oc = data.oc;
     this.file = data.file;
     this.isPDF = data.isPDF;
+    this.oc_path = data.oc_path;
   }
 
 

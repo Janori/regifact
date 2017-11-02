@@ -23,6 +23,7 @@ export class DashboardUsersComponent implements OnInit {
 
   canUse(value:string){
     return Data.canUse(value);
+
   }
 
   constructor(private usersService:UsersService,

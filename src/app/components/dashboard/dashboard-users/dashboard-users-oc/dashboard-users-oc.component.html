@@ -46,7 +46,37 @@
           </md-error>
         </md-input-container>
       </div>
+      <div class="col-md-12">
+        <md-input-container class="input-style">
+          <input mdInput
+             formControlName="programmed_pay_date"
+             [mdDatepicker]="picker"
+             placeholder="Fecha programada de pago">
+          <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+          <md-datepicker #picker></md-datepicker>
+          <md-datepicker touchUi="true" #picker></md-datepicker>
+          <md-error *ngIf="form.controls['programmed_pay_date'].errors?.required">
+            El campo es requerido.
+          </md-error>
+        </md-input-container>
+      </div>
     </div>
+
+
+    <!--<md-input-container class="input-style">
+      <input mdInput
+             [value]="form.controls['programmed_pay_date'].value | date:'dd-MM-yyyy'"
+             placeholder="Fecha programada de pago">
+      <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+      <md-datepicker #picker></md-datepicker>
+      <md-error *ngIf="form.controls['programmed_pay_date'].errors?.required">
+        El campo es requerido.
+      </md-error>
+      <button mdSuffix [mdDatepickerToggle]="picker"></button>
+    </md-input-container class="input-style">-->
+
+
+    <br>
     <br>
     <div class="row">
       <div class="col-md-12">
@@ -80,7 +110,8 @@
           </div>
         </div>
 
-        <div *ngIf="!isMobile && (files.length == 0 && !fileUrl)" class="dropzone" appDnd
+        <div *ngIf="!isMobile && (files.length == 0 && !fileUrl)" class="dropzone"
+            appDnd
             (filesChangeEmiter)="onFilesChange($event)"
             [allowedExtensions]="['png', 'jpg', 'bmp', 'pdf']">
           <div class="text-wrapper">

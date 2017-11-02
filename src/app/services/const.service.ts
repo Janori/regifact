@@ -7,7 +7,7 @@ import 'rxjs/add/operator/timeout';
 
 @Injectable()
 export class ConstService{
-  //static mainUrl = "http://localhost:8000/api/"
+  //static mainUrl = "http://localhost:8000/"
   static mainUrl = "http://api.bymssa.mx/api/";
 
   constructor(private http:Http){

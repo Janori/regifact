@@ -25,13 +25,17 @@ export class AccessGuardService {
 
 
     var re = /(\w+)[0-9]+(\w+)/;
-    let url = next.url.join('').replace(re, "$1$2");
+    var url = next.url.join('').replace(re, "$1$2");
+    for(let i=0;i<10;i++){
+      url = url.replace(re, "$1$2");
+    }
+
     if(url == "home") return true;
-    //console.log(url);
+    console.log(url);
     for(let a of Data.access){
        if(url.indexOf(a.description) > -1 &&
             (url.length - a.description.length < 3)){
-          //console.log(url, a.description);
+          console.log(url, a.description);
          return true;
        }
     }

@@ -17,6 +17,7 @@
             <app-searchbox hoverText="Buscar rfc, empresa, agente..."
                           [value]="params.query"
                            (performSearch)="buscar($event)"></app-searchbox>
+
           </div>
           <!--<div class="col-md-12">
             <div class="row">
@@ -39,6 +40,13 @@
             </div>
           </div>-->
         </div>
+      </div>
+      <div class="col-md-4">
+        <md-select (change)="statusChanged()" [(ngModel)]="selectedValue" *ngIf="status" placeholder="Estado">
+          <md-option *ngFor="let s of status" [value]="s.status">
+            {{ s.status }}
+          </md-option>
+        </md-select>
       </div>
       <!--<div class="col-md-4">
         <h4>Incluir en búsqueda:</h4>
@@ -69,17 +77,25 @@
        </td>
        <td>{{oc.providers.name}}</td>
        <td>{{oc.invoice_number}}</td>
-       <td><a (click)="showFile(oc.oc_path, true)" [routerLink]="['.']">{{oc.porder_number}}</a></td>
+       <td>
+         <button (click)="showFileOC(oc)"
+           type="button" class="btn btn-outline-success btn-sm">
+           {{ oc.porder_number }}
+         </button>
+         <!--<a (click)="showFile(oc.oc_path, true)" [routerLink]="['.']">{{oc.porder_number}}</a></td>-->
        <td>{{oc.amount | currency:'USD':true:'1.2-2'}}</td>
        <td>
          <div [ngSwitch]="oc.status">
            <div *ngSwitchCase="'Válido'">
-             <button (click)="finalizar(oc)"
+             <button *ngIf="canUse('a_pay_oc')" (click)="finalizar(oc)"
                      class="btn btn-sm btn-primary" type="button">
                      Finalizar
              </button>
+             <div *ngIf="!canUse('a_pay_oc')">
+               Lista para finalizar
+             </div>
            </div>
-           <div *ngSwitchDefault>{{ oc.status }}</div>
+           <div *ngSwitchDefault>{{ oc.active ? oc.status : 'Cancelado' }}</div>
          </div>
        </td>
        <td>
@@ -91,25 +107,22 @@
        <td>
          <div class="row">
            <div class="col-md-12">
-             <button [routerLink]="['../../dashboard/providers',oc.user_id,'edit-oc',oc.id]"
+             <button *ngIf="canUse('a_edit_oc') && oc.active" [routerLink]="['../../dashboard/providers',oc.user_id,'edit-oc',oc.id]"
                      type="button" class="btn btn-primary btn-sm">
                <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
                Editar
              </button>
-             <button (click)="borrar(oc.id)"
+             <button *ngIf="canUse('a_del_oc') && oc.active" (click)="borrar(oc)"
                type="button" class="btn btn-danger btn-sm">
                <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
-               Borrar
+               Cancelar
              </button>
-             <a *ngIf="oc.download_path" [routerLink]="'/' + oc.download_path">
-               descargar
-             </a>
-             <button *ngIf="oc.files?.pdf_path" (click)="showFile(oc, true)"
+             <button *ngIf="oc.files?.pdf_path && canUse('a_show_files_oc')" (click)="showFile(oc, true)"
                type="button" class="btn btn-success btn-sm">
                <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
                PDF
              </button>
-             <button *ngIf="oc.files?.xml_path" (click)="showFile(oc, false)"
+             <button *ngIf="oc.files?.xml_path && canUse('a_show_files_oc')" (click)="showFile(oc, false)"
                type="button" class="btn btn-success btn-sm">
                <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
                 XML

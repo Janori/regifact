@@ -1,10 +1,60 @@
 <div class="animated fadeIn">
-  <h1>Perfil</h1>
 
-  <button (click)="logout()"
-          class="btn btn-danger"
-          type="button">
-          Salir
-  </button>
+  <div class="row">
+    <div class="left-margin-fst">
+      <h1>Perfil</h1>
+    </div>
+    <div class="left-margin">
+        <button (click)="logout()"
+                class="btn btn-danger"
+                type="button">
+                Salir
+        </button>
+    </div>
+  </div>
+
+  <md-tab-group>
+    <md-tab label="Inicio"></md-tab>
+    <md-tab label="Cambiar contraseña">
+      <form [formGroup]="form" class="form form-top">
+        <md-input-container class="input-style">
+          <input mdInput
+                 formControlName="password"
+                 type="password"
+                 placeholder="*Contraseña">
+
+           <md-hint align="start">Símbolos permitidos: . ? ! $ # @ _ -</md-hint>
+           <md-error *ngIf="form.controls['password'].errors?.required">
+            La contraseña es requerida.
+           </md-error>
+           <md-error *ngIf="form.controls['password'].errors?.pattern">
+            La contraseña contiene caracteres no válidos.
+           </md-error>
+           <md-error *ngIf="form.controls['password'].errors?.minlength">
+            La contraseña debe contener por lo menos 6 caracteres.
+           </md-error>
+        </md-input-container>
+        <md-input-container class="input-style">
+          <input mdInput
+                 formControlName="password_repeat"
+                 type="password"
+                 placeholder="*Repetir contraseña">
+           <md-error *ngIf="form.controls['password_repeat'].errors?.notEqual
+                           || form.controls['password'].errors?.notEqual">
+            Las contraseñas no son iguales.
+           </md-error>
+        </md-input-container>
+        <br>
+        <button (click)="updatePWD(form)"
+                md-raised-button
+                [disabled]="!form.valid" >
+                Actualizar contraseña
+        </button>
+      </form>
+    </md-tab>
+  </md-tab-group>
+
+
+
 
 </div>

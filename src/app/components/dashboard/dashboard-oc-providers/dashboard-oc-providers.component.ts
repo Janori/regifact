@@ -15,8 +15,8 @@ import * as FileSaver from 'file-saver';
   styleUrls: ['./dashboard-oc-providers.component.css']
 })
 export class DashboardOcProvidersComponent implements OnInit {
-  @ViewChild('xmlInput') xmlEl:ElementRef;
-  @ViewChild('pdfInput') pdfEl:ElementRef;
+  //@ViewChild('xmlInput') xmlEl:ElementRef;
+  //@ViewChild('pdfInput') pdfEl:ElementRef;
 
   resultCount:number = 0;
   ocs:any[] = [];
@@ -77,15 +77,24 @@ export class DashboardOcProvidersComponent implements OnInit {
     this.router.navigate(['dashboard/oc'], {queryParams: {query: value}});
   }
 
-  openXML(){
-    this.rd.invokeElementMethod(this.xmlEl.nativeElement, 'click');
+  tmpOC:any;
+  openXML(oc:any, id:number){
+    this.tmpOC = oc;
+    let xmlRef:any = document.getElementsByClassName('xmlInput')[id];
+    this.rd.invokeElementMethod(xmlRef, 'click');
+    //this.rd.invokeElementMethod(this.xmlEl.nativeElement, 'click');
   }
-  openPDF(){
-    this.rd.invokeElementMethod(this.pdfEl.nativeElement, 'click');
+  openPDF(oc:any, id:number){
+    this.tmpOC = oc;
+    let pdfRef:any = document.getElementsByClassName('pdfInput')[id];
+    this.rd.invokeElementMethod(pdfRef, 'click');
+    //this.rd.invokeElementMethod(this.pdfEl.nativeElement, 'click');
   }
 
 
-  saveXML(fileInput: any, oc:any){
+  saveXML(fileInput: any){
+    let oc = this.tmpOC;
+    console.log(oc.amount);
     if (fileInput.target.files && fileInput.target.files[0]) {
       let file = fileInput.target.files[0];
       let ext = file.name.split('.')[file.name.split('.').length - 1];
@@ -94,8 +103,8 @@ export class DashboardOcProvidersComponent implements OnInit {
         var myReader: FileReader = new FileReader();
         myReader.onloadend = (e=>{
           let txt = myReader.result;
-          let rgxTotal = /(?:^|\s)Total\s*=\s*"(.*?)(?:"|$)/g;
-          let rgxFolio = /(?:^|\s)Folio\s*=\s*"(.*?)(?:"|$)/g;
+          let rgxTotal = /(?:^|\s)[Tt]otal\s*=\s*"(.*?)(?:"|$)/g;
+          let rgxFolio = /(?:^|\s)[Ff]olio\s*=\s*"(.*?)(?:"|$)/g;
           let matchTot = rgxTotal.exec(txt);
           let matchFolio = rgxFolio.exec(txt);
 
@@ -133,7 +142,8 @@ export class DashboardOcProvidersComponent implements OnInit {
       }
     }
   }
-  savePDF(fileInput: any, oc:any){
+  savePDF(fileInput: any){
+    let oc = this.tmpOC;
     if (fileInput.target.files && fileInput.target.files[0]) {
       let file = fileInput.target.files[0];
       let ext = file.name.split('.')[file.name.split('.').length - 1];
@@ -157,16 +167,18 @@ export class DashboardOcProvidersComponent implements OnInit {
     }
   }
 
-  showFile(oc:any, isPDF:boolean, isOC:boolean = false){
-    var path = isPDF ? oc.files.pdf_path : oc.files.xml_path;
+  showFile(oc:any, isPDF:boolean, isOC:boolean){
+    var path = "";
     if(isOC) path = oc.oc_path;
+    else path = isPDF ? oc.files.pdf_path : oc.files.xml_path;
     //var newTab = window.open('', '_blank');
     this.porderService.getPOCFile(path, isPDF).subscribe(file=>{
       let url = window.URL.createObjectURL(new Blob([file], {type: isPDF ? 'application/pdf' : 'application/xml'}));
 
       if(isPDF) oc.download_pdf_path = url;
       else oc.download_xml_path = url;
-      this.openDialogDownloadOrOpen(oc, file, isPDF);
+      if(isOC) oc.oc_path = url;
+      this.openDialogDownloadOrOpen(oc, file, isPDF, isOC);
       //newTab.location.href = url;
       //window.open(url);
     })
@@ -203,7 +215,7 @@ export class DashboardOcProvidersComponent implements OnInit {
     });
   }
 
-  openDialogDownloadOrOpen(oc:any, file:Blob, isPDF:boolean) {
+  openDialogDownloadOrOpen(oc:any, file:Blob, isPDF:boolean, oc_path:boolean) {
     let config: MdDialogConfig = {
       disableClose: false,
       width: '',
@@ -217,7 +229,8 @@ export class DashboardOcProvidersComponent implements OnInit {
       data: {
         oc: oc,
         file: file,
-        isPDF: isPDF
+        isPDF: isPDF,
+        oc_path: oc_path
       }
     };
     let dialogRef = this.dialog.open(DialogResultOpenOrDownloadComponent, config);

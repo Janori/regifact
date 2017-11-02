@@ -45,9 +45,9 @@ import {MdInputModule, MdSelectModule,
        MdPaginatorModule, MdDialogModule,
        MdButtonModule, MdCardModule,
        MdDatepickerModule, MdNativeDateModule,
-       MdCheckboxModule, MdTooltipModule, } from '@angular/material';
+       MdCheckboxModule, MdTooltipModule,
+       MdTabsModule, MdSnackBarModule  } from '@angular/material';
 
-import { CdkTableModule } from '@angular/cdk';
 import { DialogResultCreateComponent } from './components/shared/dialog-result-create/dialog-result-create.component';
 import { SearchboxComponent } from './components/shared/searchbox/searchbox.component';
 import { PaginatorComponent } from './components/shared/paginator/paginator.component';
@@ -100,8 +100,7 @@ import { DialogResultOpenOrDownloadComponent } from './components/shared/dialog-
     HttpModule,
     MdInputModule, MdSelectModule, MdDialogModule, MdPaginatorModule,
     MdButtonModule, MdCardModule, MdDatepickerModule, MdNativeDateModule,
-    MdCheckboxModule,
-    CdkTableModule,
+    MdCheckboxModule, MdTabsModule, MdSnackBarModule,
     ChartsModule,
     MdTooltipModule,
   ],
@@ -116,4 +115,6 @@ import { DialogResultOpenOrDownloadComponent } from './components/shared/dialog-
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  
+}

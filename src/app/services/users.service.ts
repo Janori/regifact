@@ -11,11 +11,14 @@ export class UsersService {
   urlProviders = "providers";
   urlUserName = "users/find/username/";
   urlEmail = "users/find/email/";
+  urlPwd = "users/pwd";
   kinds = "users/kinds";
   roles = "roles";
 
   constructor(private http:Http,
               private router:Router) { }
+
+
 
   getAllUsers(from:number = 0, to:number = 10){
       let url = ConstService.mainUrl + this.url + `?from=${from}&count=${to}`;
@@ -63,6 +66,18 @@ export class UsersService {
     return this.http.put(url, data, { headers })
     .map( res =>{
       return res.json().status;
+    }, (errorResponse: any) => {
+      console.log(errorResponse);
+    });
+  }
+  updatePWD(pwd:string){
+    let url = ConstService.mainUrl + this.urlPwd;
+    let headers = new Headers();
+    headers.append("Authorization", localStorage.getItem('auth_token'));
+
+    return this.http.put(url, {'password':pwd}, { headers })
+    .map( res =>{
+      return res.json();
     }, (errorResponse: any) => {
       console.log(errorResponse);
     });

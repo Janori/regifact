@@ -19,14 +19,21 @@ import * as FileSaver from 'file-saver';
 export class DashboardOcComponent implements OnInit {
   resultCount:number = 0;
   ocs:any[] = [];
+  status:any[] = [];
 
   checkFecha:boolean = false;
   dateTo:Date = new Date();
 
+  canUse(value:string){
+    return Data.canUse(value);
+  }
+
+
   params = {
     'from': 0,
     'to': 10,
-    'query': ''
+    'query': '',
+    'status': '',
   }
 
   isUser() : boolean{
@@ -46,6 +53,10 @@ export class DashboardOcComponent implements OnInit {
               }
 
   ngOnInit() {
+    this.porderService.getStatus().subscribe(data =>{
+      this.status = data.data;
+      this.status.push({'status': 'Todos'});
+    });
     this.activatedRoute.queryParams.subscribe(data=>{
       if(data && data.from && data.to && this.isNumeric(data.from) && this.isNumeric(data.to)){
         this.params.from = data.from;
@@ -54,7 +65,7 @@ export class DashboardOcComponent implements OnInit {
       if(data.query){
         this.params.query = data.query;
         this.searchService
-        .search("porders", `from=${this.params.from}&count=${this.params.to}&invoice_number=${this.params.query}&porder_number=${this.params.query}&name=${this.params.query}&rfc=${this.params.query}&agent=${this.params.query}`)
+        .search("porders", `from=${this.params.from}&count=${this.params.to}&invoice_number=${this.params.query}&porder_number=${this.params.query}&name=${this.params.query}&rfc=${this.params.query}&agent=${this.params.query}${(this.params.status == "") ? "" : "&status="+this.params.status  }`)
         .subscribe(data=>{
           this.ocs = data.data;
           this.resultCount = data.msg;
@@ -62,6 +73,7 @@ export class DashboardOcComponent implements OnInit {
           alert(`Ocurrió un error en el servidor. ${error}`);
         });
       }else{
+        this.params.query = '';
         if(Data.kind == 'p'){
           this.porderService.getProvPorders(this.params.from, this.params.to).subscribe(data=>{
             this.ocs = data.data;
@@ -78,12 +90,14 @@ export class DashboardOcComponent implements OnInit {
   }
 
   buscar(value:string){
-
-    this.router.navigate(['dashboard/oc'], {queryParams: {query: value}});
+    var s = "";
+    if(this.selectedValue != "Todos")
+      s = this.selectedValue;
+    this.router.navigate(['dashboard/oc'], {queryParams: {query: value, status: s}});
   }
 
-  borrar(id:number){
-    this.openDialog(id);
+  borrar(oc:any){
+    this.openDialog(oc);
   }
   finalizar(oc:any){
     this.porderService.savePorder({ 'id': oc.id, 'status':'Finalizado'}, null, true)
@@ -99,12 +113,15 @@ export class DashboardOcComponent implements OnInit {
     return new Date(date);
   }
 
-  openDialog(id:number) {
+  openDialog(oc:any) {
+    let id = oc.id;
     let dialogRef = this.dialog.open(DialogResultConfirmComponent);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.porderService.delete(id).subscribe(res=>{
-          window.location.reload();
+          //window.location.reload();
+          oc.status = "Cancelado";
+          //this.ocs = this.ocs.filter(item => item !== oc);
         }, error=>{
           console.log(error);
         });
@@ -120,13 +137,30 @@ export class DashboardOcComponent implements OnInit {
 
       if(isPDF) oc.download_pdf_path = url;
       else oc.download_xml_path = url;
-      this.openDialogDownloadOrOpen(oc, file, isPDF);
+      this.openDialogDownloadOrOpen(oc, file, isPDF, false);
       //newTab.location.href = url;
       //window.open(url);
     })
   }
 
-  openDialogDownloadOrOpen(oc:any, file:Blob, isPDF:boolean) {
+  showFileOC(oc:any){
+    var path = oc.oc_path;
+    if(path == null || path == ''){
+      alert('No existe la orden de compra.');
+      return;
+    }
+    //var newTab = window.open('', '_blank');
+    this.porderService.getPOCFile(path, true).subscribe(file=>{
+      let url = window.URL.createObjectURL(new Blob([file], {type: 'application/pdf' }));
+
+      oc.oc_path = url;
+      this.openDialogDownloadOrOpen(oc, file, true, true);
+      //newTab.location.href = url;
+      //window.open(url);
+    })
+  }
+
+  openDialogDownloadOrOpen(oc:any, file:Blob, isPDF:boolean, oc_path:boolean) {
     let config: MdDialogConfig = {
       disableClose: false,
       width: '',
@@ -140,7 +174,8 @@ export class DashboardOcComponent implements OnInit {
       data: {
         oc: oc,
         file: file,
-        isPDF: isPDF
+        isPDF: isPDF,
+        oc_path: oc_path
       }
     };
     let dialogRef = this.dialog.open(DialogResultOpenOrDownloadComponent, config);
@@ -156,5 +191,13 @@ export class DashboardOcComponent implements OnInit {
         break;
       }
     });*/
+  }
+
+  selectedValue:string;
+  statusChanged(){
+    if(this.selectedValue != "Todos")
+      this.params.status = this.selectedValue;
+    else this.params.status = "";
+    this.router.navigate(['dashboard/oc'], {queryParams: this.params });
   }
 }

@@ -13,6 +13,18 @@ export class PorderService {
 
   constructor(private http:Http) { }
 
+  getStatus(){
+    let url = ConstService.mainUrl + this.url + '/status';
+    let headers = new Headers();
+    headers.append("Authorization", localStorage.getItem('auth_token'));
+
+    return this.http.get(url, { headers }).map( res =>{
+      return res.json();
+    }, (errorResponse: any) => {
+      console.log(errorResponse);
+    });
+  }
+
   getPorders(from:number = 0, to:number = 10){
       let url = ConstService.mainUrl + this.url + `?from=${from}&count=${to}`;
       let headers = new Headers();
@@ -69,6 +81,8 @@ export class PorderService {
       formData.append('amount', data.amount);
     if(data.status)
       formData.append('status', data.status);
+    if(data.programmed_pay_date)
+      formData.append('programmed_pay_date', data.programmed_pay_date);
 
     if(file)
       formData.append('oc_file', file, file.name);
@@ -119,7 +133,12 @@ export class PorderService {
 
       console.log(res.headers.get('content-type'));*/
       //return `ftp://portal%40bymssa.mx:P455w0rd@bymssa.mx/`
-      return new Blob([res.blob()], { type:res.headers.get('content-type')});
+      if(res.status){
+        return res;
+      }else{
+        return res;
+      }
+      //return new Blob([res.blob()], { type:res.headers.get('content-type')});
     },error=>{
       console.log(error);
     });
